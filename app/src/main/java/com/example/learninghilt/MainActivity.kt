@@ -2,8 +2,13 @@ package com.example.learninghilt
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.android.scopes.FragmentScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -16,31 +21,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        println(someClass.doAThing())
-        println(someClass.doSomeOtherThing())
+        //println(someClass.doAThing())
     }
 }
 
 class SomeClass
 @Inject
 constructor(
-    private val someOtherClass: SomeOtherClass
+    private val gson: Gson
+    //private val someInterfaceImpl: SomeInterface
 ) {
-
-    fun doAThing(): String {
-        return "Look I did a thing!"
-    }
-
-    fun doSomeOtherThing(): String {
-        return someOtherClass.doSomeOtherThing()
-    }
+    //fun doAThing() = "Look I got: ${someInterfaceImpl.getAThing()}"
 }
 
-class SomeOtherClass
+class SomeInterfaceImpl
 @Inject
-constructor() {
+constructor() : SomeInterface {
 
-    fun doSomeOtherThing(): String {
-        return "Look I did some other thing!"
-    }
+    override fun getAThing() = "A thing"
+}
+
+interface SomeInterface {
+    fun getAThing(): String
 }
